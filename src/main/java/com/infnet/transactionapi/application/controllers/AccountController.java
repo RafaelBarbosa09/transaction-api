@@ -3,10 +3,12 @@ package com.infnet.transactionapi.application.controllers;
 import com.infnet.transactionapi.application.DTO.AccountDTO;
 import com.infnet.transactionapi.application.services.AccountService;
 import com.infnet.transactionapi.infrastructure.models.Account;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Account", description = "Account API")
 @RestController
 @RequestMapping("/account")
 public class AccountController {
