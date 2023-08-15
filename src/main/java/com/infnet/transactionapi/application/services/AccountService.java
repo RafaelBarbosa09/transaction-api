@@ -1,10 +1,8 @@
 package com.infnet.transactionapi.application.services;
 
 import com.infnet.transactionapi.application.DTO.AccountDTO;
-import com.infnet.transactionapi.domain.Exceptions.ResourceNotFoundException;
 import com.infnet.transactionapi.domain.repositories.AccountRepository;
 import com.infnet.transactionapi.infrastructure.models.Account;
-//import com.infnet.transactionapi.infrastructure.repositories.AccountRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -13,7 +11,7 @@ import java.util.List;
 @Service
 public class AccountService {
 
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
     public AccountService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
