@@ -20,6 +20,15 @@ public class AccountController {
         this.accountService = accountService;
     }
 
+    @GetMapping()
+    public ResponseEntity<Object> getAllAccounts() {
+        try {
+            return new ResponseEntity<>(accountService.getAllAccounts(), null, 200);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), null, 500);
+        }
+    }
+
     @PostMapping()
     public ResponseEntity<Object> createAccount(@RequestBody AccountDTO accountDTO) {
         try {
@@ -37,6 +46,18 @@ public class AccountController {
     public ResponseEntity<Object> getAccountById(@PathVariable Long id) {
         try {
             Account account = accountService.getAccountById(id);
+            AccountDTO accountFounded = accountService.createDTOFromAccount(account);
+
+            return new ResponseEntity<>(accountFounded, null, 200);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), null, 500);
+        }
+    }
+
+    @GetMapping("/holder/{accountHolder}")
+    public ResponseEntity<Object> getAccountByAccountHolder(@PathVariable String accountHolder) {
+        try {
+            Account account = accountService.getAccountByAccountHolder(accountHolder);
             AccountDTO accountFounded = accountService.createDTOFromAccount(account);
 
             return new ResponseEntity<>(accountFounded, null, 200);
