@@ -11,12 +11,6 @@ public class AccountDomain {
 
     public AccountDomain() {}
 
-    public AccountDomain(String accountHolder) {
-        this.accountHolder = accountHolder;
-        this.availableLimit = new BigDecimal(1200.00);
-        this.activeCard = true;
-    }
-
     public String getAccountHolder() {
         return accountHolder;
     }

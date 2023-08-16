@@ -1,36 +1,31 @@
 package com.infnet.transactionapi.application.services;
 
 import com.infnet.transactionapi.application.DTO.AccountDTO;
+import com.infnet.transactionapi.application.mappers.AccountDTOMapper;
 import com.infnet.transactionapi.domain.domainModels.AccountDomain;
+import com.infnet.transactionapi.domain.factories.AccountFactory;
 import com.infnet.transactionapi.domain.repositories.AccountRepository;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
 public class AccountService {
 
     private final AccountRepository accountRepository;
+    private final AccountDTOMapper mapper;
 
-    public AccountService(AccountRepository accountRepository) {
+    public AccountService(AccountRepository accountRepository, AccountDTOMapper mapper) {
         this.accountRepository = accountRepository;
+        this.mapper = mapper;
     }
 
     public AccountDomain createAccountDomainFromDTO(AccountDTO accountDTO) {
-        AccountDomain account = new AccountDomain();
-        account.setAccountHolder(accountDTO.getAccountHolder());
-        account.setAvailableLimit(new BigDecimal(1200.00));
-        account.setActiveCard(true);
-        return account;
+        return mapper.toDomain(accountDTO);
     }
 
     public AccountDTO createDTOFromAccountDomain(AccountDomain account) {
-        AccountDTO accountDTO = new AccountDTO();
-        accountDTO.setAccountHolder(account.getAccountHolder());
-        accountDTO.setAvailableLimit(account.getAvailableLimit());
-        accountDTO.setActiveCard(account.getActiveCard());
-        return accountDTO;
+        return mapper.toDTO(account);
     }
 
     public List<AccountDTO> createAccountDTOListFromAccountDomainList(List<AccountDomain> accounts) {
@@ -42,7 +37,9 @@ public class AccountService {
     }
 
     public AccountDomain createAccount(AccountDomain account) {
-        return accountRepository.save(account);
+        AccountDomain accountDomain = AccountFactory.create();
+        accountDomain.setAccountHolder(account.getAccountHolder());
+        return accountRepository.save(accountDomain);
     }
 
     public AccountDomain getAccountById(Long id) {
