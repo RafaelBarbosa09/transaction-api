@@ -1,9 +1,8 @@
 package com.infnet.transactionapi.application.services;
 
 import com.infnet.transactionapi.application.DTO.AccountDTO;
-import com.infnet.transactionapi.domain.entities.AccountDomain;
+import com.infnet.transactionapi.domain.domainModels.AccountDomain;
 import com.infnet.transactionapi.domain.repositories.AccountRepository;
-import com.infnet.transactionapi.infrastructure.models.Account;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -35,8 +34,7 @@ public class AccountService {
     }
 
     public List<AccountDTO> createAccountDTOListFromAccountDomainList(List<AccountDomain> accounts) {
-        List<AccountDTO> accountsDTO = accounts.stream().map(account -> createDTOFromAccountDomain(account)).toList();
-        return accountsDTO;
+        return accounts.stream().map(this::createDTOFromAccountDomain).toList();
     }
 
     public List<AccountDomain> getAllAccounts() {

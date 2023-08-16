@@ -1,7 +1,6 @@
 package com.infnet.transactionapi.domain.repositories;
 
-import com.infnet.transactionapi.domain.entities.AccountDomain;
-import com.infnet.transactionapi.infrastructure.models.Account;
+import com.infnet.transactionapi.domain.domainModels.AccountDomain;
 
 import java.util.List;
 

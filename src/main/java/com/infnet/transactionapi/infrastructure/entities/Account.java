@@ -1,9 +1,8 @@
-package com.infnet.transactionapi.infrastructure.models;
+package com.infnet.transactionapi.infrastructure.entities;
 
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity

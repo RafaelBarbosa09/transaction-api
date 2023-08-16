@@ -1,4 +1,4 @@
-package com.infnet.transactionapi.domain.entities;
+package com.infnet.transactionapi.domain.domainModels;
 
 import java.math.BigDecimal;
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.infnet.transactionapi.application.services;
 
-import com.infnet.transactionapi.domain.entities.Transaction;
+import com.infnet.transactionapi.domain.domainModels.Transaction;
 
 public class TransactionService {
     public Transaction execute() {

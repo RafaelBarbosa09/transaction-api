@@ -1,9 +1,6 @@
 package com.infnet.transactionapi.application.DTO;
 
-import com.infnet.transactionapi.infrastructure.models.Transaction;
-
 import java.math.BigDecimal;
-import java.util.List;
 
 public class AccountDTO {
     private String accountHolder;

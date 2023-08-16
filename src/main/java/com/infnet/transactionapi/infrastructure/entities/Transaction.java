@@ -1,4 +1,4 @@
-package com.infnet.transactionapi.infrastructure.models;
+package com.infnet.transactionapi.infrastructure.entities;
 
 import jakarta.persistence.*;
 

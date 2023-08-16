@@ -2,7 +2,7 @@ package com.infnet.transactionapi.application.controllers;
 
 import com.infnet.transactionapi.application.DTO.AccountDTO;
 import com.infnet.transactionapi.application.services.AccountService;
-import com.infnet.transactionapi.domain.entities.AccountDomain;
+import com.infnet.transactionapi.domain.domainModels.AccountDomain;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

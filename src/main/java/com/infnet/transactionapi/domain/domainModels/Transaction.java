@@ -1,4 +1,4 @@
-package com.infnet.transactionapi.domain.entities;
+package com.infnet.transactionapi.domain.domainModels;
 
 import com.infnet.transactionapi.domain.Exceptions.DoubleTransactionException;
 

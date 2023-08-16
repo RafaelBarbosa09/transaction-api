@@ -1,7 +1,7 @@
 package com.infnet.transactionapi.application.mappers;
 
-import com.infnet.transactionapi.domain.entities.AccountDomain;
-import com.infnet.transactionapi.infrastructure.models.Account;
+import com.infnet.transactionapi.domain.domainModels.AccountDomain;
+import com.infnet.transactionapi.infrastructure.entities.Account;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -13,11 +13,11 @@ public class AccountMapper {
         this.modelMapper = modelMapper;
     }
 
-    public AccountDomain toEntity(Account accountModel) {
-        return modelMapper.map(accountModel, AccountDomain.class);
+    public AccountDomain toDomain(Account accountEntity) {
+        return modelMapper.map(accountEntity, AccountDomain.class);
     }
 
-    public Account toModel(AccountDomain accountDomain) {
+    public Account toEntity(AccountDomain accountDomain) {
         return modelMapper.map(accountDomain, Account.class);
     }
 }
