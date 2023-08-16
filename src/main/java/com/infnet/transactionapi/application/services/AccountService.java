@@ -2,6 +2,7 @@ package com.infnet.transactionapi.application.services;
 
 import com.infnet.transactionapi.application.DTO.AccountDTO;
 import com.infnet.transactionapi.application.mappers.AccountDTOMapper;
+import com.infnet.transactionapi.domain.Exceptions.AccountAlreadyExistsException;
 import com.infnet.transactionapi.domain.domainModels.AccountDomain;
 import com.infnet.transactionapi.domain.factories.AccountFactory;
 import com.infnet.transactionapi.domain.repositories.AccountRepository;
@@ -32,21 +33,31 @@ public class AccountService {
         return accounts.stream().map(this::createDTOFromAccountDomain).toList();
     }
 
-    public List<AccountDomain> getAllAccounts() {
-        return accountRepository.findAll();
+    public List<AccountDTO> getAllAccounts() {
+        return createAccountDTOListFromAccountDomainList(accountRepository.findAll());
     }
 
-    public AccountDomain createAccount(AccountDomain account) {
-        AccountDomain accountDomain = AccountFactory.create();
-        accountDomain.setAccountHolder(account.getAccountHolder());
-        return accountRepository.save(accountDomain);
+    public AccountDTO createAccount(AccountDTO accountDTO) {
+        AccountDomain accountDomain = createAccountDomainFromDTO(accountDTO);
+
+        if (accountAlreadyExists(accountDomain)) {
+            throw new AccountAlreadyExistsException("Account already exists");
+        }
+
+        AccountDomain account = AccountFactory.create(accountDomain.getAccountHolder());
+        return createDTOFromAccountDomain(accountRepository.save(account));
     }
 
-    public AccountDomain getAccountById(Long id) {
-        return accountRepository.findById(id);
+    public Boolean accountAlreadyExists(AccountDomain account) {
+        AccountDomain accountDomain = accountRepository.findByAccountHolder(account.getAccountHolder());
+        return accountDomain != null;
     }
 
-    public AccountDomain getAccountByAccountHolder(String accountHolder) {
-        return accountRepository.findByAccountHolder(accountHolder);
+    public AccountDTO getAccountById(Long id) {
+        return createDTOFromAccountDomain(accountRepository.findById(id));
+    }
+
+    public AccountDTO getAccountByAccountHolder(String accountHolder) {
+        return createDTOFromAccountDomain(accountRepository.findByAccountHolder(accountHolder));
     }
 }

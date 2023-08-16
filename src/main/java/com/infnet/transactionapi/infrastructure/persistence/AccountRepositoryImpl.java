@@ -23,6 +23,11 @@ public class AccountRepositoryImpl implements AccountRepository {
     @Override
     public AccountDomain findByAccountHolder(String accountHolder) {
         Account account = repository.findByAccountHolder(accountHolder);
+
+        if(account == null) {
+            return null;
+        }
+
         return mapper.toDomain(account);
     }
 
