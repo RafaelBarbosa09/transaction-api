@@ -3,26 +3,18 @@ package com.infnet.transactionapi.domain.entities;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class Account {
+public class AccountDomain {
     private String accountHolder;
     private BigDecimal availableLimit;
     private Boolean activeCard;
     private List<Transaction> transactions;
 
-    public Account() {}
+    public AccountDomain() {}
 
-    public Account(String accountHolder, BigDecimal availableLimit, Boolean activeCard, List<Transaction> transactions) {
+    public AccountDomain(String accountHolder) {
         this.accountHolder = accountHolder;
-        this.availableLimit = availableLimit;
-        this.activeCard = activeCard;
-        this.transactions = transactions;
-    }
-
-    public Account create(Account account) {
-        this.accountHolder = account.accountHolder;
-        this.availableLimit = new BigDecimal(1200.0);
+        this.availableLimit = new BigDecimal(1200.00);
         this.activeCard = true;
-        return this;
     }
 
     public String getAccountHolder() {

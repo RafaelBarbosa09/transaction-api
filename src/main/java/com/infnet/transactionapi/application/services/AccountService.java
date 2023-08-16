@@ -1,6 +1,7 @@
 package com.infnet.transactionapi.application.services;
 
 import com.infnet.transactionapi.application.DTO.AccountDTO;
+import com.infnet.transactionapi.domain.entities.AccountDomain;
 import com.infnet.transactionapi.domain.repositories.AccountRepository;
 import com.infnet.transactionapi.infrastructure.models.Account;
 import org.springframework.stereotype.Service;
@@ -17,15 +18,15 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    public Account createAccountFromDTO(AccountDTO accountDTO) {
-        Account account = new Account();
+    public AccountDomain createAccountDomainFromDTO(AccountDTO accountDTO) {
+        AccountDomain account = new AccountDomain();
         account.setAccountHolder(accountDTO.getAccountHolder());
         account.setAvailableLimit(new BigDecimal(1200.00));
         account.setActiveCard(true);
         return account;
     }
 
-    public AccountDTO createDTOFromAccount(Account account) {
+    public AccountDTO createDTOFromAccountDomain(AccountDomain account) {
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setAccountHolder(account.getAccountHolder());
         accountDTO.setAvailableLimit(account.getAvailableLimit());
@@ -33,19 +34,24 @@ public class AccountService {
         return accountDTO;
     }
 
-    public List<Account> getAllAccounts() {
+    public List<AccountDTO> createAccountDTOListFromAccountDomainList(List<AccountDomain> accounts) {
+        List<AccountDTO> accountsDTO = accounts.stream().map(account -> createDTOFromAccountDomain(account)).toList();
+        return accountsDTO;
+    }
+
+    public List<AccountDomain> getAllAccounts() {
         return accountRepository.findAll();
     }
 
-    public Account createAccount(Account account) {
+    public AccountDomain createAccount(AccountDomain account) {
         return accountRepository.save(account);
     }
 
-    public Account getAccountById(Long id) {
+    public AccountDomain getAccountById(Long id) {
         return accountRepository.findById(id);
     }
 
-    public Account getAccountByAccountHolder(String accountHolder) {
+    public AccountDomain getAccountByAccountHolder(String accountHolder) {
         return accountRepository.findByAccountHolder(accountHolder);
     }
 }

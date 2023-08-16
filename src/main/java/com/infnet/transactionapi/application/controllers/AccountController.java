@@ -2,11 +2,12 @@ package com.infnet.transactionapi.application.controllers;
 
 import com.infnet.transactionapi.application.DTO.AccountDTO;
 import com.infnet.transactionapi.application.services.AccountService;
-import com.infnet.transactionapi.infrastructure.models.Account;
+import com.infnet.transactionapi.domain.entities.AccountDomain;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(name = "Account", description = "Account API")
 @RestController
@@ -22,7 +23,9 @@ public class AccountController {
     @GetMapping()
     public ResponseEntity<Object> getAllAccounts() {
         try {
-            return new ResponseEntity<>(accountService.getAllAccounts(), null, 200);
+            List<AccountDomain> accounts = accountService.getAllAccounts();
+            List<AccountDTO> accountsDTO = accountService.createAccountDTOListFromAccountDomainList(accounts);
+            return new ResponseEntity<>(accountsDTO, null, 200);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), null, 500);
         }
@@ -31,10 +34,11 @@ public class AccountController {
     @PostMapping()
     public ResponseEntity<Object> createAccount(@RequestBody AccountDTO accountDTO) {
         try {
-            Account account = accountService.createAccountFromDTO(accountDTO);
-            Account accountCreated = accountService.createAccount(account);
+            AccountDomain accountDomain = accountService.createAccountDomainFromDTO(accountDTO);
+            AccountDomain accountCreated = accountService.createAccount(accountDomain);
+            AccountDTO response = accountService.createDTOFromAccountDomain(accountCreated);
 
-            return new ResponseEntity<>(accountCreated, null, 201);
+            return new ResponseEntity<>(response, null, 201);
 
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), null, 500);
@@ -44,8 +48,8 @@ public class AccountController {
     @GetMapping("/{id}")
     public ResponseEntity<Object> getAccountById(@PathVariable Long id) {
         try {
-            Account account = accountService.getAccountById(id);
-            AccountDTO accountFounded = accountService.createDTOFromAccount(account);
+            AccountDomain account = accountService.getAccountById(id);
+            AccountDTO accountFounded = accountService.createDTOFromAccountDomain(account);
 
             return new ResponseEntity<>(accountFounded, null, 200);
         } catch (Exception e) {
@@ -56,8 +60,8 @@ public class AccountController {
     @GetMapping("/holder/{accountHolder}")
     public ResponseEntity<Object> getAccountByAccountHolder(@PathVariable String accountHolder) {
         try {
-            Account account = accountService.getAccountByAccountHolder(accountHolder);
-            AccountDTO accountFounded = accountService.createDTOFromAccount(account);
+            AccountDomain account = accountService.getAccountByAccountHolder(accountHolder);
+            AccountDTO accountFounded = accountService.createDTOFromAccountDomain(account);
 
             return new ResponseEntity<>(accountFounded, null, 200);
         } catch (Exception e) {

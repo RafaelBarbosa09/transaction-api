@@ -9,16 +9,16 @@ public class Transaction {
     private BigDecimal amount;
     private Date transactionTime;
     private Long quantity;
-    private Account account;
+    private AccountDomain accountDomain;
     private Seller seller;
 
     public Transaction() {}
 
-    public Transaction(BigDecimal amount, Date transactionTime, Long quantity, Account account, Seller seller) {
+    public Transaction(BigDecimal amount, Date transactionTime, Long quantity, AccountDomain accountDomain, Seller seller) {
         this.amount = amount;
         this.transactionTime = transactionTime;
         this.quantity = quantity;
-        this.account = account;
+        this.accountDomain = accountDomain;
         this.seller = seller;
     }
 
@@ -27,7 +27,7 @@ public class Transaction {
     }
 
     public Boolean isLimitAvailable(BigDecimal amount) {
-        return this.account.getAvailableLimit().compareTo(amount) >= 0;
+        return this.accountDomain.getAvailableLimit().compareTo(amount) >= 0;
     }
 
     public Boolean authorizeTransaction(Boolean isCardActive, Boolean isLimitAvailable) {
@@ -66,12 +66,12 @@ public class Transaction {
         this.quantity = quantity;
     }
 
-    public Account getAccount() {
-        return account;
+    public AccountDomain getAccount() {
+        return accountDomain;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setAccount(AccountDomain accountDomain) {
+        this.accountDomain = accountDomain;
     }
 
     public Seller getSeller() {

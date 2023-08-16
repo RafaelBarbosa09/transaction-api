@@ -1,12 +1,13 @@
 package com.infnet.transactionapi.domain.repositories;
 
+import com.infnet.transactionapi.domain.entities.AccountDomain;
 import com.infnet.transactionapi.infrastructure.models.Account;
 
 import java.util.List;
 
 public interface AccountRepository {
-    Account findByAccountHolder(String accountHolder);
-    Account save(Account account);
-    Account findById(Long id);
-    List<Account> findAll();
+    AccountDomain findByAccountHolder(String accountHolder);
+    AccountDomain save(AccountDomain account);
+    AccountDomain findById(Long id);
+    List<AccountDomain> findAll();
 }
