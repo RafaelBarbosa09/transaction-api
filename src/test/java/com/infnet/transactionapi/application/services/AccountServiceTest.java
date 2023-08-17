@@ -16,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.webjars.NotFoundException;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -46,7 +47,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    void getAllAccounts() {
+    void testGetAllAccounts() {
         AccountDomain accountDomain2 = new AccountDomain("Jane Smith", new BigDecimal("1500"), true);
         AccountDTO accountDTO2 = new AccountDTO("Jane Smith", new BigDecimal("1500"), true);
 
@@ -67,7 +68,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void testCreateAccountSuccess() {
+    void testCreateAccountSuccess() {
         when(mapper.toDomain(accountDTO)).thenReturn(accountDomain);
         when(accountRepository.save(any(AccountDomain.class))).thenReturn(account);
         when(mapper.toDTO(account)).thenReturn(accountDTO);
@@ -79,7 +80,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void testCreateAccountFailureAccountAlreadyExists() {
+    void testCreateAccountFailureAccountAlreadyExists() {
         AccountService spyAccountService = spy(accountService);
 
         when(mapper.toDomain(accountDTO)).thenReturn(accountDomain);
@@ -91,7 +92,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    void accountAlreadyExists() {
+    void testAccountAlreadyExists() {
         when(accountRepository.findByAccountHolder(accountHolder)).thenReturn(accountDomain);
 
         Boolean result = accountService.accountAlreadyExists(accountDomain);
@@ -101,7 +102,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    void getAccountById() {
+    void testGetAccountById() {
         Long id = 1L;
         when(accountRepository.findById(id)).thenReturn(account);
         when(mapper.toDTO(account)).thenReturn(accountDTO);
@@ -113,13 +114,30 @@ public class AccountServiceTest {
     }
 
     @Test
-    void getAccountByAccountHolder() {
+    void testGetAccountByIdFailure() {
+        Long id = 1L;
+        when(accountRepository.findById(id)).thenReturn(null);
+
+        assertThrows(NotFoundException.class, () -> accountService.getAccountById(id));
+        verify(accountRepository, times(1)).findById(id);
+    }
+
+    @Test
+    void testGetAccountByAccountHolder() {
         when(accountRepository.findByAccountHolder(accountHolder)).thenReturn(account);
         when(mapper.toDTO(account)).thenReturn(accountDTO);
 
         AccountDTO result = accountService.getAccountByAccountHolder(accountHolder);
 
         assertEquals(accountDTO, result);
+        verify(accountRepository, times(1)).findByAccountHolder(accountHolder);
+    }
+
+    @Test
+    void testGetAccountByAccountHolderFailure() {
+        when(accountRepository.findByAccountHolder(accountHolder)).thenReturn(null);
+
+        assertThrows(NotFoundException.class, () -> accountService.getAccountByAccountHolder(accountHolder));
         verify(accountRepository, times(1)).findByAccountHolder(accountHolder);
     }
 }

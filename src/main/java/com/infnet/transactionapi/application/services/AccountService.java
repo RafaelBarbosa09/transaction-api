@@ -7,8 +7,10 @@ import com.infnet.transactionapi.domain.domainModels.AccountDomain;
 import com.infnet.transactionapi.domain.factories.AccountFactory;
 import com.infnet.transactionapi.domain.repositories.AccountRepository;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class AccountService {
@@ -39,14 +41,24 @@ public class AccountService {
 
     public Boolean accountAlreadyExists(AccountDomain account) {
         AccountDomain accountDomain = accountRepository.findByAccountHolder(account.getAccountHolder());
-        return accountDomain != null;
+        return Objects.nonNull(accountDomain);
     }
 
     public AccountDTO getAccountById(Long id) {
-        return this.mapper.toDTO(accountRepository.findById(id));
+        AccountDomain account = accountRepository.findById(id);
+        if(Objects.isNull(account)) {
+            throw new NotFoundException("Account not found");
+        }
+
+        return this.mapper.toDTO(account);
     }
 
     public AccountDTO getAccountByAccountHolder(String accountHolder) {
-        return this.mapper.toDTO(accountRepository.findByAccountHolder(accountHolder));
+        AccountDomain account = accountRepository.findByAccountHolder(accountHolder);
+        if(Objects.isNull(account)) {
+            throw new NotFoundException("Account not found");
+        }
+
+        return this.mapper.toDTO(account);
     }
 }

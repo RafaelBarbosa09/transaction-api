@@ -8,6 +8,7 @@ import com.infnet.transactionapi.infrastructure.entities.Account;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class AccountRepositoryImpl implements AccountRepository {
@@ -23,8 +24,7 @@ public class AccountRepositoryImpl implements AccountRepository {
     @Override
     public AccountDomain findByAccountHolder(String accountHolder) {
         Account account = repository.findByAccountHolder(accountHolder);
-
-        if(account == null) {
+        if(Objects.isNull(account)) {
             return null;
         }
 
@@ -41,6 +41,10 @@ public class AccountRepositoryImpl implements AccountRepository {
     @Override
     public AccountDomain findById(Long id) {
         Account account = repository.findById(id).orElse(null);
+        if(Objects.isNull(account)) {
+            return null;
+        }
+
         return mapper.toDomain(account);
     }
 
