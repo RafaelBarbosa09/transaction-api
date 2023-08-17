@@ -5,16 +5,16 @@ import com.infnet.transactionapi.domain.Exceptions.DoubleTransactionException;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Transaction {
+public class TransactionDomain {
     private BigDecimal amount;
     private Date transactionTime;
     private Long quantity;
     private AccountDomain accountDomain;
     private Seller seller;
 
-    public Transaction() {}
+    public TransactionDomain() {}
 
-    public Transaction(BigDecimal amount, Date transactionTime, Long quantity, AccountDomain accountDomain, Seller seller) {
+    public TransactionDomain(BigDecimal amount, Date transactionTime, Long quantity, AccountDomain accountDomain, Seller seller) {
         this.amount = amount;
         this.transactionTime = transactionTime;
         this.quantity = quantity;

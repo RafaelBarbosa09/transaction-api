@@ -7,7 +7,7 @@ public class AccountDomain {
     private String accountHolder;
     private BigDecimal availableLimit;
     private Boolean activeCard;
-    private List<Transaction> transactions;
+    private List<TransactionDomain> transactionDomains;
 
     public AccountDomain() {}
 
@@ -35,11 +35,11 @@ public class AccountDomain {
         this.activeCard = activeCard;
     }
 
-    public List<Transaction> getTransactions() {
-        return transactions;
+    public List<TransactionDomain> getTransactions() {
+        return transactionDomains;
     }
 
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
+    public void setTransactions(List<TransactionDomain> transactionDomains) {
+        this.transactionDomains = transactionDomains;
     }
 }
