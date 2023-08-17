@@ -21,31 +21,20 @@ public class AccountService {
         this.mapper = mapper;
     }
 
-    public AccountDomain createAccountDomainFromDTO(AccountDTO accountDTO) {
-        return mapper.toDomain(accountDTO);
-    }
-
-    public AccountDTO createDTOFromAccountDomain(AccountDomain account) {
-        return mapper.toDTO(account);
-    }
-
-    public List<AccountDTO> createAccountDTOListFromAccountDomainList(List<AccountDomain> accounts) {
-        return accounts.stream().map(this::createDTOFromAccountDomain).toList();
-    }
-
     public List<AccountDTO> getAllAccounts() {
-        return createAccountDTOListFromAccountDomainList(accountRepository.findAll());
+        List<AccountDomain> accounts = accountRepository.findAll();
+        return accounts.stream().map(mapper::toDTO).toList();
     }
 
     public AccountDTO createAccount(AccountDTO accountDTO) {
-        AccountDomain accountDomain = createAccountDomainFromDTO(accountDTO);
+        AccountDomain accountDomain = this.mapper.toDomain(accountDTO);
 
         if (accountAlreadyExists(accountDomain)) {
             throw new AccountAlreadyExistsException("Account already exists");
         }
 
         AccountDomain account = AccountFactory.create(accountDomain.getAccountHolder());
-        return createDTOFromAccountDomain(accountRepository.save(account));
+        return this.mapper.toDTO(accountRepository.save(account));
     }
 
     public Boolean accountAlreadyExists(AccountDomain account) {
@@ -54,10 +43,10 @@ public class AccountService {
     }
 
     public AccountDTO getAccountById(Long id) {
-        return createDTOFromAccountDomain(accountRepository.findById(id));
+        return this.mapper.toDTO(accountRepository.findById(id));
     }
 
     public AccountDTO getAccountByAccountHolder(String accountHolder) {
-        return createDTOFromAccountDomain(accountRepository.findByAccountHolder(accountHolder));
+        return this.mapper.toDTO(accountRepository.findByAccountHolder(accountHolder));
     }
 }

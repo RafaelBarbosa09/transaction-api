@@ -1,8 +1,11 @@
 package com.infnet.transactionapi.application.DTO;
 
+import lombok.Builder;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
+@Builder
 public class AccountDTO {
     private String accountHolder;
     private BigDecimal availableLimit;

@@ -18,6 +18,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 public class AccountServiceTest {
@@ -33,23 +35,42 @@ public class AccountServiceTest {
     private AccountDTO accountDTO;
     private AccountDomain accountDomain;
     private AccountDomain account;
+    private String accountHolder;
 
     @BeforeEach
     public void setUp() {
         this.accountDTO = new AccountDTO("John Doe", null, null);
         this.accountDomain = new AccountDomain("John Doe", null, null);
         this.account = new AccountDomain("John Doe", new BigDecimal("1200"), true);
+        this.accountHolder = "John Doe";
+    }
+
+    @Test
+    void getAllAccounts() {
+        AccountDomain accountDomain2 = new AccountDomain("Jane Smith", new BigDecimal("1500"), true);
+        AccountDTO accountDTO2 = new AccountDTO("Jane Smith", new BigDecimal("1500"), true);
+
+        List<AccountDomain> accountDomains = Arrays.asList(accountDomain, accountDomain2);
+        List<AccountDTO> expectedAccountDTOs = Arrays.asList(accountDTO, accountDTO2);
+
+        when(accountRepository.findAll()).thenReturn(accountDomains);
+        when(mapper.toDTO(accountDomain)).thenReturn(accountDTO);
+        when(mapper.toDTO(accountDomain2)).thenReturn(accountDTO2);
+
+        List<AccountDTO> result = accountService.getAllAccounts();
+
+        assertEquals(expectedAccountDTOs, result);
+
+        verify(accountRepository, times(1)).findAll();
+        verify(mapper, times(1)).toDTO(accountDomain);
+        verify(mapper, times(1)).toDTO(accountDomain2);
     }
 
     @Test
     public void testCreateAccountSuccess() {
-        when(mapper.toDomain(any(AccountDTO.class))).thenReturn(accountDomain);
-        when(accountService.createAccountDomainFromDTO(accountDTO)).thenReturn(accountDomain);
+        when(mapper.toDomain(accountDTO)).thenReturn(accountDomain);
         when(accountRepository.save(any(AccountDomain.class))).thenReturn(account);
-
-        accountDTO.setAvailableLimit(account.getAvailableLimit());
-        accountDTO.setActiveCard(account.getActiveCard());
-        when(accountService.createDTOFromAccountDomain(account)).thenReturn(accountDTO);
+        when(mapper.toDTO(account)).thenReturn(accountDTO);
 
         AccountDTO result = accountService.createAccount(accountDTO);
 
@@ -61,11 +82,44 @@ public class AccountServiceTest {
     public void testCreateAccountFailureAccountAlreadyExists() {
         AccountService spyAccountService = spy(accountService);
 
-        when(mapper.toDomain(any(AccountDTO.class))).thenReturn(accountDomain);
-        when(accountService.createAccountDomainFromDTO(accountDTO)).thenReturn(accountDomain);
+        when(mapper.toDomain(accountDTO)).thenReturn(accountDomain);
 
         doReturn(true).when(spyAccountService).accountAlreadyExists(accountDomain);
 
         assertThrows(AccountAlreadyExistsException.class, () -> spyAccountService.createAccount(accountDTO));
+        verify(accountRepository, times(0)).save(any(AccountDomain.class));
+    }
+
+    @Test
+    void accountAlreadyExists() {
+        when(accountRepository.findByAccountHolder(accountHolder)).thenReturn(accountDomain);
+
+        Boolean result = accountService.accountAlreadyExists(accountDomain);
+
+        assertEquals(true, result);
+        verify(accountRepository, times(1)).findByAccountHolder(accountHolder);
+    }
+
+    @Test
+    void getAccountById() {
+        Long id = 1L;
+        when(accountRepository.findById(id)).thenReturn(account);
+        when(mapper.toDTO(account)).thenReturn(accountDTO);
+
+        AccountDTO result = accountService.getAccountById(id);
+
+        assertEquals(accountDTO, result);
+        verify(accountRepository, times(1)).findById(id);
+    }
+
+    @Test
+    void getAccountByAccountHolder() {
+        when(accountRepository.findByAccountHolder(accountHolder)).thenReturn(account);
+        when(mapper.toDTO(account)).thenReturn(accountDTO);
+
+        AccountDTO result = accountService.getAccountByAccountHolder(accountHolder);
+
+        assertEquals(accountDTO, result);
+        verify(accountRepository, times(1)).findByAccountHolder(accountHolder);
     }
 }
