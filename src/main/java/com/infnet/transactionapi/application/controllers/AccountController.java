@@ -11,7 +11,7 @@ import java.util.List;
 
 @Tag(name = "Account", description = "Account API")
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/accounts")
 public class AccountController {
 
     private final AccountService accountService;

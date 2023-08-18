@@ -24,10 +24,6 @@ public class AccountRepositoryImpl implements AccountRepository {
     @Override
     public AccountDomain findByAccountHolder(String accountHolder) {
         Account account = repository.findByAccountHolder(accountHolder);
-        if(Objects.isNull(account)) {
-            return null;
-        }
-
         return mapper.toDomain(account);
     }
 
@@ -41,10 +37,6 @@ public class AccountRepositoryImpl implements AccountRepository {
     @Override
     public AccountDomain findById(Long id) {
         Account account = repository.findById(id).orElse(null);
-        if(Objects.isNull(account)) {
-            return null;
-        }
-
         return mapper.toDomain(account);
     }
 
