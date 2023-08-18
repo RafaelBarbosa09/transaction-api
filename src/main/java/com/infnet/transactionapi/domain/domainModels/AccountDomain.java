@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class AccountDomain {
+    private Long id;
     private String accountHolder;
     private BigDecimal availableLimit;
     private Boolean activeCard;
@@ -16,6 +17,14 @@ public class AccountDomain {
         this.accountHolder = accountHolder;
         this.availableLimit = availableLimit;
         this.activeCard = activeCard;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getAccountHolder() {
@@ -47,6 +56,14 @@ public class AccountDomain {
     }
 
     public void setTransactions(List<TransactionDomain> transactionDomains) {
+        this.transactionDomains = transactionDomains;
+    }
+
+    public List<TransactionDomain> getTransactionDomains() {
+        return transactionDomains;
+    }
+
+    public void setTransactionDomains(List<TransactionDomain> transactionDomains) {
         this.transactionDomains = transactionDomains;
     }
 

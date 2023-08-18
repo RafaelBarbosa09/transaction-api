@@ -1,40 +1,23 @@
-package com.infnet.transactionapi.infrastructure.entities;
-
-import jakarta.persistence.*;
+package com.infnet.transactionapi.application.DTO;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Entity
-public class Transaction {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false)
+public class TransactionDTO {
     private BigDecimal value;
-
-    @Column(name = "transaction_time", nullable = false)
     private Date transactionTime;
-
-    @Column(nullable = false)
     private Long quantity;
+    private AccountDTO account;
+    private SellerDTO seller;
 
-    @ManyToOne
-    @JoinColumn(name = "account_id")
-    private Account account;
+    public TransactionDTO() {}
 
-    @ManyToOne
-    @JoinColumn(name = "seller_id")
-    private Seller seller;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public TransactionDTO(BigDecimal value, Date transactionTime, Long quantity, AccountDTO account, SellerDTO seller) {
+        this.value = value;
+        this.transactionTime = transactionTime;
+        this.quantity = quantity;
+        this.account = account;
+        this.seller = seller;
     }
 
     public BigDecimal getValue() {
@@ -61,19 +44,19 @@ public class Transaction {
         this.quantity = quantity;
     }
 
-    public Account getAccount() {
+    public AccountDTO getAccount() {
         return account;
     }
 
-    public void setAccount(Account account) {
+    public void setAccount(AccountDTO account) {
         this.account = account;
     }
 
-    public Seller getSeller() {
+    public SellerDTO getSeller() {
         return seller;
     }
 
-    public void setSeller(Seller seller) {
+    public void setSeller(SellerDTO seller) {
         this.seller = seller;
     }
 }

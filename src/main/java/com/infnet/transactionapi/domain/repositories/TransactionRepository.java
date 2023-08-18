@@ -5,4 +5,5 @@ import java.util.List;
 
 public interface TransactionRepository {
     List<TransactionDomain> findAll();
+    TransactionDomain save(TransactionDomain transaction);
 }

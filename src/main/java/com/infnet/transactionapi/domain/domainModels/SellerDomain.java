@@ -1,12 +1,21 @@
 package com.infnet.transactionapi.domain.domainModels;
 
-public class Seller {
+public class SellerDomain {
+    private Long id;
     private String name;
 
-    public Seller() {}
+    public SellerDomain() {}
 
-    public Seller(String name) {
+    public SellerDomain(String name) {
         this.name = name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
