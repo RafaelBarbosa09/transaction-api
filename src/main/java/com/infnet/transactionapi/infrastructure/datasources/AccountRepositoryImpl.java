@@ -1,14 +1,14 @@
-package com.infnet.transactionapi.infrastructure.persistence;
+package com.infnet.transactionapi.infrastructure.datasources;
 
 import com.infnet.transactionapi.application.mappers.AccountMapper;
 import com.infnet.transactionapi.domain.domainModels.AccountDomain;
 import com.infnet.transactionapi.domain.repositories.AccountRepository;
 import com.infnet.transactionapi.domain.repositories.JpaAccountRepository;
 import com.infnet.transactionapi.infrastructure.entities.Account;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Objects;
 
 @Repository
 public class AccountRepositoryImpl implements AccountRepository {
@@ -27,12 +27,21 @@ public class AccountRepositoryImpl implements AccountRepository {
         return mapper.toDomain(account);
     }
 
+    @Transactional
     @Override
     public AccountDomain save(AccountDomain account) {
         Account accountEntity = mapper.toEntity(account);
         Account accountSaved = repository.save(accountEntity);
         return mapper.toDomain(accountSaved);
     }
+
+    @Override
+    public AccountDomain update(AccountDomain account) {
+        Account accountEntity = mapper.toEntity(account);
+        Account accountSaved = repository.save(accountEntity);
+        return mapper.toDomain(accountSaved);
+    }
+
 
     @Override
     public AccountDomain findById(Long id) {

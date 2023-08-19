@@ -1,4 +1,4 @@
-package com.infnet.transactionapi.infrastructure.persistence;
+package com.infnet.transactionapi.infrastructure.datasources;
 
 import com.infnet.transactionapi.application.mappers.SellerMapper;
 import com.infnet.transactionapi.domain.domainModels.SellerDomain;

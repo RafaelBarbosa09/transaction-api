@@ -1,11 +1,7 @@
 package com.infnet.transactionapi.application.services;
 
 import com.infnet.transactionapi.application.DTO.TransactionDTO;
-import com.infnet.transactionapi.application.mappers.AccountDTOMapper;
-import com.infnet.transactionapi.application.mappers.SellerDTOMapper;
 import com.infnet.transactionapi.application.mappers.TransactionDTOMapper;
-import com.infnet.transactionapi.domain.Exceptions.DuplicateTransactionException;
-import com.infnet.transactionapi.domain.Exceptions.HighFrequencySmallIntervalException;
 import com.infnet.transactionapi.domain.domainModels.AccountDomain;
 import com.infnet.transactionapi.domain.domainModels.SellerDomain;
 import com.infnet.transactionapi.domain.domainModels.TransactionDomain;
@@ -15,7 +11,6 @@ import com.infnet.transactionapi.domain.repositories.TransactionRepository;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -27,23 +22,17 @@ public class TransactionService {
     private final AccountRepository accountRepository;
     private final SellerRepository sellerRepository;
     private final TransactionDTOMapper transactionMapper;
-    private final AccountDTOMapper accountMapper;
-    private final SellerDTOMapper sellerMapper;
 
     public TransactionService(
         TransactionRepository transactionRepository,
         AccountRepository accountRepository,
         SellerRepository sellerRepository,
-        TransactionDTOMapper transactionMapper,
-        AccountDTOMapper accountMapper,
-        SellerDTOMapper sellerMapper
+        TransactionDTOMapper transactionMapper
     ) {
         this.transactionRepository = transactionRepository;
         this.accountRepository = accountRepository;
         this.sellerRepository = sellerRepository;
         this.transactionMapper = transactionMapper;
-        this.accountMapper = accountMapper;
-        this.sellerMapper = sellerMapper;
     }
 
     public List<TransactionDTO> getAllTransactions() {
@@ -63,10 +52,11 @@ public class TransactionService {
     public TransactionDTO createTransaction(TransactionDTO transactionDTO) {
         String accountHolder = transactionDTO.getAccount().getAccountHolder();
         AccountDomain account = accountRepository.findByAccountHolder(accountHolder);
-
         if (Objects.isNull(account)) {
             throw new NotFoundException("Account not found");
         }
+
+        account.setAvailableLimit(account.getAvailableLimit().subtract(transactionDTO.getValue()));
 
         TransactionDomain transactionDomain = transactionMapper.toDomain(transactionDTO);
         transactionDomain.setAccount(account);
@@ -79,6 +69,7 @@ public class TransactionService {
         transactionDomain.authorizeTransaction(transactions);
 
         TransactionDomain transaction = transactionRepository.save(transactionDomain);
+        accountRepository.update(account);
 
         return transactionMapper.toDTO(transaction);
     }

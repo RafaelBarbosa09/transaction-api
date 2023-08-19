@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface AccountRepository {
     AccountDomain findByAccountHolder(String accountHolder);
     AccountDomain save(AccountDomain account);
+    AccountDomain update(AccountDomain account);
     AccountDomain findById(Long id);
     List<AccountDomain> findAll();
 }
