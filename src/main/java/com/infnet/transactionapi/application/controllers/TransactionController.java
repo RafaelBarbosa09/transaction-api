@@ -24,9 +24,19 @@ public class TransactionController {
     public ResponseEntity<Object> getAllTransactions() {
         try {
             List<TransactionDTO> transactions = transactionService.getAllTransactions();
-            return new ResponseEntity<>(transactions, null, 200);
+            return new ResponseEntity<>(transactions, null, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), null, 500);
+            return new ResponseEntity<>(e.getMessage(), null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getTransactionById(@PathVariable Long id) {
+        try {
+            TransactionDTO transaction = transactionService.getTransactionById(id);
+            return new ResponseEntity<>(transaction, null, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), null, HttpStatus.NOT_FOUND);
         }
     }
 

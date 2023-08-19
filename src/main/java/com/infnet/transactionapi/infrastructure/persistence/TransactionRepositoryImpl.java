@@ -27,6 +27,12 @@ public class TransactionRepositoryImpl implements TransactionRepository {
         return transactions.stream().map(mapper::toDomain).toList();
     }
 
+    @Override
+    public TransactionDomain findById(Long id) {
+        Transaction transaction = repository.findById(id).orElse(null);
+        return mapper.toDomain(transaction);
+    }
+
     @Transactional
     @Override
     public TransactionDomain save(TransactionDomain transaction) {

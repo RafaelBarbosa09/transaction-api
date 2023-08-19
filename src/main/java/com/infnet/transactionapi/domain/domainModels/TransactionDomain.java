@@ -1,9 +1,10 @@
 package com.infnet.transactionapi.domain.domainModels;
 
-import com.infnet.transactionapi.domain.Exceptions.DoubleTransactionException;
+import com.infnet.transactionapi.domain.Exceptions.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class TransactionDomain {
@@ -24,24 +25,77 @@ public class TransactionDomain {
         this.seller = seller;
     }
 
-    public Boolean isCardActive(Boolean activeCard) {
-        return activeCard;
+    public void authorizeTransaction(List<TransactionDomain> transactions) {
+        if(isHighFrequencySmallInterval(transactions)) {
+            throw new HighFrequencySmallIntervalException("High frequency small interval");
+        }
+
+        if(hasDuplicateTransactions(transactions, this)) {
+            throw new DuplicateTransactionException("Similar transaction");
+        }
+
+        if(!isActiveCard()) {
+            throw new InactiveCardException("Inactive card");
+        }
+
+        if(!isLimitAvailable()) {
+            throw new LimitNotAvailableException("Limit not available");
+        }
     }
 
-    public Boolean isLimitAvailable(BigDecimal amount) {
-        return this.account.getAvailableLimit().compareTo(amount) >= 0;
+    private boolean isActiveCard() {
+        return this.account.getActiveCard();
     }
 
-    public Boolean authorizeTransaction(Boolean isCardActive, Boolean isLimitAvailable) {
-        return isCardActive && isLimitAvailable;
+    private boolean isLimitAvailable() {
+//        account.getAvailableLimit() deve ser maior que this.value
+        return this.account.getAvailableLimit().compareTo(this.value) >= 0;
     }
 
-    public void checkHighFrequencySmallInterval(Date transactionTime, long quantity) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    private boolean isHighFrequencySmallInterval(List<TransactionDomain> transactions) {
+        Date now = new Date();
+        final long TWO_MINUTES_IN_MILLISECONDS = 2 * 60 * 1000;
+        int count = 0;
+
+        for (TransactionDomain transaction : transactions) {
+            if (transaction.isWithinTwoMinutes(transaction.getTransactionTime(), now, TWO_MINUTES_IN_MILLISECONDS)) {
+                count++;
+                if (count >= 3) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
-    public void checkDoubleTransaction(BigDecimal amount, Date transactionTime, SellerDomain sellerDomain) {
-        if (amount == this.value && transactionTime == this.transactionTime && sellerDomain == this.seller) new DoubleTransactionException("Double transaction");
+    private boolean hasDuplicateTransactions(List<TransactionDomain> transactions, TransactionDomain transaction) {
+        final long TWO_MINUTES_IN_MILLISECONDS = 2 * 60 * 1000;
+        Date now = new Date();
+        int count = 0;
+
+        for (TransactionDomain transactionDomain : transactions) {
+            if (isWithinTwoMinutes(transactionDomain.getTransactionTime(), now, TWO_MINUTES_IN_MILLISECONDS) &&
+                isSimilarTransaction(transactionDomain, transaction)) {
+                count++;
+                if (count >= 2) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isSimilarTransaction(TransactionDomain firstTransaction, TransactionDomain secondTransaction) {
+        boolean isSameSeller = firstTransaction.getSeller().getName().equals(secondTransaction.getSeller().getName());
+        boolean isSameValue = firstTransaction.getValue().equals(secondTransaction.getValue());
+
+        return isSameValue && isSameSeller;
+    }
+
+    private boolean isWithinTwoMinutes(Date transactionTime, Date currentTime, long timeLimitMillis) {
+        long timeDifferenceMillis = currentTime.getTime() - transactionTime.getTime();
+        return timeDifferenceMillis <= timeLimitMillis;
     }
 
     public Long getId() {
