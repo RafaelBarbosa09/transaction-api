@@ -114,7 +114,10 @@ class TransactionServiceTest {
     void testCreateTransaction() {
         when(accountRepository.findByAccountHolder(accountDomain.getAccountHolder())).thenReturn(accountDomain);
         when(mapper.toDomain(transactionDTO)).thenReturn(transactionDomain);
+        when(sellerRepository.findByName(sellerDomain.getName())).thenReturn(sellerDomain);
         when(transactionRepository.save(transactionDomain)).thenReturn(transactionDomain);
+        accountDomain.setId(1L);
+        when(accountRepository.findById(1L)).thenReturn(accountDomain);
         when(mapper.toDTO(transactionDomain)).thenReturn(transactionDTO);
 
         TransactionDTO actualTransactionDTO = transactionService.createTransaction(transactionDTO);
@@ -152,6 +155,7 @@ class TransactionServiceTest {
         when(accountRepository.findByAccountHolder(accountDomain.getAccountHolder())).thenReturn(accountDomain);
         when(mapper.toDomain(transactionDTO)).thenReturn(transactionDomain);
         when(transactionRepository.findAll()).thenReturn(Arrays.asList(transactionDomain, transactionDomain2));
+        when(sellerRepository.findByName(sellerDomain.getName())).thenReturn(sellerDomain);
 
         assertThrows(DuplicateTransactionException.class, () -> transactionService.createTransaction(transactionDTO));
 

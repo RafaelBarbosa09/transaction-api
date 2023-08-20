@@ -2,7 +2,7 @@ package com.infnet.transactionapi.infrastructure.entities;
 
 import jakarta.persistence.*;
 
-import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Seller {
@@ -12,9 +12,6 @@ public class Seller {
 
     @Column(nullable = false)
     private String name;
-
-    @OneToMany(mappedBy = "seller")
-    private List<Transaction> transactions;
 
     public Long getId() {
         return id;
@@ -32,11 +29,16 @@ public class Seller {
         this.name = name;
     }
 
-    public List<Transaction> getTransactions() {
-        return transactions;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Seller seller = (Seller) o;
+        return Objects.equals(id, seller.id) && Objects.equals(name, seller.name);
     }
 
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }

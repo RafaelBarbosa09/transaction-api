@@ -11,6 +11,7 @@ import com.infnet.transactionapi.domain.repositories.TransactionRepository;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -51,29 +52,55 @@ public class TransactionService {
 
     public TransactionDTO createTransaction(TransactionDTO transactionDTO) {
         String accountHolder = transactionDTO.getAccount().getAccountHolder();
-        AccountDomain account = accountRepository.findByAccountHolder(accountHolder);
-        if (Objects.isNull(account)) {
-            throw new NotFoundException("Account not found");
-        }
-        account.setAvailableLimit(account.getAvailableLimit().subtract(transactionDTO.getValue()));
+        AccountDomain account = findTransactionAccount(accountHolder);
 
         TransactionDomain transactionDomain = transactionMapper.toDomain(transactionDTO);
-        transactionDomain.setAccount(account);
         transactionDomain.setTransactionTime(new Date());
+        transactionDomain.setAccount(account);
 
-        SellerDomain seller = sellerRepository.findByName(transactionDomain.getSeller().getName());
-        if (!Objects.isNull(seller)) {
-            transactionDomain.setSeller(seller);
-        }
+        String sellerName = transactionDTO.getSeller().getName();
+        SellerDomain seller = findOrCreateTransactionSeller(sellerName);
+        transactionDomain.setSeller(seller);
 
         List<TransactionDomain> transactions = transactionRepository.findAll();
         transactionDomain.authorizeTransaction(transactions);
 
         TransactionDomain transaction = transactionRepository.save(transactionDomain);
-        AccountDomain account2 = accountRepository.findByAccountHolder(accountHolder);
-        account2.setAvailableLimit(account.getAvailableLimit());
-        accountRepository.update(account2);
+
+        AccountDomain accountUpdated = updateTransactionAccountLimit(account, transaction.getValue());
+        transaction.setAccount(accountUpdated);
 
         return transactionMapper.toDTO(transaction);
+    }
+
+    private AccountDomain findTransactionAccount(String accountHolder) {
+        AccountDomain account = accountRepository.findByAccountHolder(accountHolder);
+        if (Objects.isNull(account)) {
+            throw new NotFoundException("Account not found");
+        }
+
+        return account;
+    }
+
+    public AccountDomain updateTransactionAccountLimit(AccountDomain account, BigDecimal value) {
+        AccountDomain accountToUpdate = accountRepository.findById(account.getId());
+        accountToUpdate.setAvailableLimit(accountToUpdate.getAvailableLimit().subtract(value));
+        return accountRepository.update(accountToUpdate);
+    }
+
+    private SellerDomain findOrCreateTransactionSeller(String sellerName) {
+        SellerDomain seller = sellerRepository.findByName(sellerName);
+        if (Objects.isNull(seller)) {
+            seller = newTransactionSeller(sellerName);
+        }
+
+        return seller;
+    }
+
+    private SellerDomain newTransactionSeller(String name) {
+        SellerDomain seller = new SellerDomain();
+        seller.setName(name);
+
+        return sellerRepository.save(seller);
     }
 }

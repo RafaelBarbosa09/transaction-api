@@ -8,6 +8,7 @@ import com.infnet.transactionapi.infrastructure.entities.Seller;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class SellerRepositoryImpl implements SellerRepository {
@@ -33,7 +34,8 @@ public class SellerRepositoryImpl implements SellerRepository {
 
     @Override
     public SellerDomain findById(Long id) {
-        return null;
+        Seller seller = repository.getOne(id);
+        return mapper.toDomain(seller);
     }
 
     @Override

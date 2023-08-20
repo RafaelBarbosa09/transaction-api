@@ -1,9 +1,11 @@
 package com.infnet.transactionapi.infrastructure.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 public class Transaction {
@@ -25,7 +27,7 @@ public class Transaction {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "seller_id")
     private Seller seller;
 
@@ -75,5 +77,18 @@ public class Transaction {
 
     public void setSeller(Seller seller) {
         this.seller = seller;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Transaction that = (Transaction) o;
+        return Objects.equals(id, that.id) && Objects.equals(value, that.value) && Objects.equals(transactionTime, that.transactionTime) && Objects.equals(quantity, that.quantity) && Objects.equals(account, that.account) && Objects.equals(seller, that.seller);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, value, transactionTime, quantity, account, seller);
     }
 }

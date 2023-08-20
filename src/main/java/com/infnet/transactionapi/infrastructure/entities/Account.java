@@ -19,7 +19,7 @@ public class Account {
     @Column(name = "active_card", nullable = false)
     private Boolean activeCard;
 
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "account", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
     private List<Transaction> transactions;
 
     public Account() {}

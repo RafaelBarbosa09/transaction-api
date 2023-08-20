@@ -7,7 +7,7 @@ public class SellerDomain {
     private Long id;
     private String name;
 
-    private List<TransactionDomain> transactions;
+//    private List<TransactionDomain> transactions;
 
     public SellerDomain() {}
 
@@ -31,24 +31,25 @@ public class SellerDomain {
         this.name = name;
     }
 
-    public List<TransactionDomain> getTransactions() {
-        return transactions;
-    }
+//    public List<TransactionDomain> getTransactions() {
+//        return transactions;
+//    }
+//
+//    public void setTransactions(List<TransactionDomain> transactions) {
+//        this.transactions = transactions;
+//    }
 
-    public void setTransactions(List<TransactionDomain> transactions) {
-        this.transactions = transactions;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SellerDomain that = (SellerDomain) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(transactions, that.transactions);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, transactions);
+        return Objects.hash(id, name);
     }
 }
