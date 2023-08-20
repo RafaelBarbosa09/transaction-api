@@ -48,7 +48,6 @@ public class TransactionDomain {
     }
 
     private boolean isLimitAvailable() {
-//        account.getAvailableLimit() deve ser maior que this.value
         return this.account.getAvailableLimit().compareTo(this.value) >= 0;
     }
 
