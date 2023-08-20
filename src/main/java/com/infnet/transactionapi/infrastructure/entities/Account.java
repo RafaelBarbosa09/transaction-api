@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
-@Table()
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +19,7 @@ public class Account {
     @Column(name = "active_card", nullable = false)
     private Boolean activeCard;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Transaction> transactions;
 
     public Account() {}

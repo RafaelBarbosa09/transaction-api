@@ -25,7 +25,7 @@ public class Transaction {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "seller_id")
     private Seller seller;
 

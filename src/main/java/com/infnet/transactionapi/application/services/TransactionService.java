@@ -26,13 +26,13 @@ public class TransactionService {
     public TransactionService(
         TransactionRepository transactionRepository,
         AccountRepository accountRepository,
-        SellerRepository sellerRepository,
-        TransactionDTOMapper transactionMapper
+        TransactionDTOMapper transactionMapper,
+        SellerRepository sellerRepository
     ) {
         this.transactionRepository = transactionRepository;
         this.accountRepository = accountRepository;
-        this.sellerRepository = sellerRepository;
         this.transactionMapper = transactionMapper;
+        this.sellerRepository = sellerRepository;
     }
 
     public List<TransactionDTO> getAllTransactions() {
@@ -43,7 +43,7 @@ public class TransactionService {
     public TransactionDTO getTransactionById(Long id) {
         TransactionDomain transaction = transactionRepository.findById(id);
         if (Objects.isNull(transaction)) {
-            throw new RuntimeException("Transaction not found");
+            throw new NotFoundException("Transaction not found");
         }
 
         return transactionMapper.toDTO(transaction);
@@ -55,33 +55,25 @@ public class TransactionService {
         if (Objects.isNull(account)) {
             throw new NotFoundException("Account not found");
         }
-
         account.setAvailableLimit(account.getAvailableLimit().subtract(transactionDTO.getValue()));
 
         TransactionDomain transactionDomain = transactionMapper.toDomain(transactionDTO);
         transactionDomain.setAccount(account);
         transactionDomain.setTransactionTime(new Date());
 
-        SellerDomain seller = createSellerIfNotExists(transactionDomain);
-        transactionDomain.setSeller(seller);
+        SellerDomain seller = sellerRepository.findByName(transactionDomain.getSeller().getName());
+        if (!Objects.isNull(seller)) {
+            transactionDomain.setSeller(seller);
+        }
 
         List<TransactionDomain> transactions = transactionRepository.findAll();
         transactionDomain.authorizeTransaction(transactions);
 
         TransactionDomain transaction = transactionRepository.save(transactionDomain);
-        accountRepository.update(account);
+        AccountDomain account2 = accountRepository.findByAccountHolder(accountHolder);
+        account2.setAvailableLimit(account.getAvailableLimit());
+        accountRepository.update(account2);
 
         return transactionMapper.toDTO(transaction);
-    }
-
-    private SellerDomain createSellerIfNotExists(TransactionDomain transactionDomain) {
-        String sellerName = transactionDomain.getSeller().getName();
-        SellerDomain seller = sellerRepository.findByName(sellerName);
-
-        if (Objects.isNull(seller)) {
-            seller = sellerRepository.save(transactionDomain.getSeller());
-        }
-
-        return seller;
     }
 }

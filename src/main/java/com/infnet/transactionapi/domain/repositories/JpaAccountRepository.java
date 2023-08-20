@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface JpaAccountRepository extends JpaRepository<Account, Long> {
     Account findByAccountHolder(String accountHolder);
+    void deleteById(Long id);
 }

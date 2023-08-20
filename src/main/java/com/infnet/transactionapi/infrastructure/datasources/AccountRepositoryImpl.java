@@ -5,8 +5,8 @@ import com.infnet.transactionapi.domain.domainModels.AccountDomain;
 import com.infnet.transactionapi.domain.repositories.AccountRepository;
 import com.infnet.transactionapi.domain.repositories.JpaAccountRepository;
 import com.infnet.transactionapi.infrastructure.entities.Account;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -53,5 +53,11 @@ public class AccountRepositoryImpl implements AccountRepository {
     public List<AccountDomain> findAll() {
         List<Account> accounts = repository.findAll();
         return accounts.stream().map(mapper::toDomain).toList();
+    }
+
+    @Transactional
+    @Override
+    public void deleteById(Long id) {
+        repository.deleteById(id);
     }
 }

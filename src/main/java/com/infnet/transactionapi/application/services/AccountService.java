@@ -61,4 +61,13 @@ public class AccountService {
 
         return this.mapper.toDTO(account);
     }
+
+    public void deleteAccount(Long id) {
+        AccountDomain account = accountRepository.findById(id);
+        if(Objects.isNull(account)) {
+            throw new NotFoundException("Account not found");
+        }
+
+        accountRepository.deleteById(id);
+    }
 }

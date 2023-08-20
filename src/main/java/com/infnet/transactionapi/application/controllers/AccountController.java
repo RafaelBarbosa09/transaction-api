@@ -60,4 +60,14 @@ public class AccountController {
             return new ResponseEntity<>(e.getMessage(), null, HttpStatus.NOT_FOUND);
         }
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteAccountById(@PathVariable Long id) {
+        try {
+            accountService.deleteAccount(id);
+            return new ResponseEntity<>(null, null, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), null, HttpStatus.NOT_FOUND);
+        }
+    }
 }

@@ -114,13 +114,11 @@ class TransactionServiceTest {
     void testCreateTransaction() {
         when(accountRepository.findByAccountHolder(accountDomain.getAccountHolder())).thenReturn(accountDomain);
         when(mapper.toDomain(transactionDTO)).thenReturn(transactionDomain);
-        when(sellerRepository.findByName(sellerDomain.getName())).thenReturn(sellerDomain);
         when(transactionRepository.save(transactionDomain)).thenReturn(transactionDomain);
         when(mapper.toDTO(transactionDomain)).thenReturn(transactionDTO);
 
         TransactionDTO actualTransactionDTO = transactionService.createTransaction(transactionDTO);
         assertEquals(transactionDTO, actualTransactionDTO);
-        verify(sellerRepository, times(1)).findByName(sellerDomain.getName());
         verify(transactionRepository, times(1)).save(transactionDomain);
     }
 
@@ -140,7 +138,6 @@ class TransactionServiceTest {
 
         when(accountRepository.findByAccountHolder(accountDomain.getAccountHolder())).thenReturn(accountDomain);
         when(mapper.toDomain(transactionDTO)).thenReturn(transactionDomain);
-        when(sellerRepository.findByName(sellerDomain.getName())).thenReturn(sellerDomain);
         when(transactionRepository.findAll()).thenReturn(Arrays.asList(transactionDomain, transactionDomain2, transactionDomain3));
 
         assertThrows(RuntimeException.class, () -> transactionService.createTransaction(transactionDTO));
@@ -154,7 +151,6 @@ class TransactionServiceTest {
 
         when(accountRepository.findByAccountHolder(accountDomain.getAccountHolder())).thenReturn(accountDomain);
         when(mapper.toDomain(transactionDTO)).thenReturn(transactionDomain);
-        when(sellerRepository.findByName(sellerDomain.getName())).thenReturn(sellerDomain);
         when(transactionRepository.findAll()).thenReturn(Arrays.asList(transactionDomain, transactionDomain2));
 
         assertThrows(DuplicateTransactionException.class, () -> transactionService.createTransaction(transactionDTO));
@@ -171,7 +167,6 @@ class TransactionServiceTest {
 
         when(accountRepository.findByAccountHolder(accountDomain.getAccountHolder())).thenReturn(invalidAccountDomain);
         when(mapper.toDomain(transactionDTO)).thenReturn(transactionDomain);
-        when(sellerRepository.findByName(sellerDomain.getName())).thenReturn(sellerDomain);
 
         assertThrows(InactiveCardException.class, () -> transactionService.createTransaction(transactionDTO));
 
@@ -185,7 +180,6 @@ class TransactionServiceTest {
 
         when(accountRepository.findByAccountHolder(accountDomain.getAccountHolder())).thenReturn(accountDomain);
         when(mapper.toDomain(transactionDTO)).thenReturn(transactionDomain);
-        when(sellerRepository.findByName(sellerDomain.getName())).thenReturn(sellerDomain);
 
         assertThrows(LimitNotAvailableException.class, () -> transactionService.createTransaction(transactionDTO));
 
