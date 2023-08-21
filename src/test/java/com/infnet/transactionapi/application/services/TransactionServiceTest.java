@@ -62,17 +62,15 @@ class TransactionServiceTest {
         AccountDTO accountDTO = new AccountDTO("John Doe", new BigDecimal("1200"), true);
         this.transactionDomain = new TransactionDomain(
             new BigDecimal("100"),
-                new Date(2023 - 1900, Calendar.AUGUST, 18, 20, 0),
-            1L,
+            new Date(2023 - 1900, Calendar.AUGUST, 18, 20, 0),
             accountDomain,
             sellerDomain
         );
         this.transactionDTO = new TransactionDTO(
             new BigDecimal("100"),
-                new Date(2023 - 1900, Calendar.AUGUST, 18, 20, 0),
-            1L,
-                accountDTO,
-                sellerDTO
+            new Date(2023 - 1900, Calendar.AUGUST, 18, 20, 0),
+            accountDTO,
+            sellerDTO
         );
     }
 
@@ -81,7 +79,6 @@ class TransactionServiceTest {
         TransactionDomain transactionDomain2 = new TransactionDomain(
             new BigDecimal("200"),
             new Date(2023 - 1900, Calendar.AUGUST, 18, 20, 0),
-            2L,
             new AccountDomain("Jane Smith", new BigDecimal("1500"), true),
             new SellerDomain("Uber Eats")
         );

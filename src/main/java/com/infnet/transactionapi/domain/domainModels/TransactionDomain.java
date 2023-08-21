@@ -11,16 +11,14 @@ public class TransactionDomain {
     private Long id;
     private BigDecimal value;
     private Date transactionTime;
-    private Long quantity;
     private AccountDomain account;
     private SellerDomain seller;
 
     public TransactionDomain() {}
 
-    public TransactionDomain(BigDecimal value, Date transactionTime, Long quantity, AccountDomain account, SellerDomain seller) {
+    public TransactionDomain(BigDecimal value, Date transactionTime, AccountDomain account, SellerDomain seller) {
         this.value = value;
         this.transactionTime = transactionTime;
-        this.quantity = quantity;
         this.account = account;
         this.seller = seller;
     }
@@ -121,14 +119,6 @@ public class TransactionDomain {
         this.transactionTime = transactionTime;
     }
 
-    public Long getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Long quantity) {
-        this.quantity = quantity;
-    }
-
     public AccountDomain getAccount() {
         return account;
     }
@@ -150,11 +140,11 @@ public class TransactionDomain {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TransactionDomain that = (TransactionDomain) o;
-        return Objects.equals(value, that.value) && Objects.equals(transactionTime, that.transactionTime) && Objects.equals(quantity, that.quantity) && Objects.equals(account, that.account) && Objects.equals(seller, that.seller);
+        return Objects.equals(id, that.id) && Objects.equals(value, that.value) && Objects.equals(transactionTime, that.transactionTime) && Objects.equals(account, that.account) && Objects.equals(seller, that.seller);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(value, transactionTime, quantity, account, seller);
+        return Objects.hash(id, value, transactionTime, account, seller);
     }
 }

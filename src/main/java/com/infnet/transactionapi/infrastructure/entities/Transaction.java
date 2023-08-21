@@ -1,7 +1,6 @@
 package com.infnet.transactionapi.infrastructure.entities;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -19,9 +18,6 @@ public class Transaction {
 
     @Column(name = "transaction_time", nullable = false)
     private Date transactionTime;
-
-    @Column(nullable = false)
-    private Long quantity;
 
     @ManyToOne
     @JoinColumn(name = "account_id")
@@ -55,14 +51,6 @@ public class Transaction {
         this.transactionTime = transactionTime;
     }
 
-    public Long getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Long quantity) {
-        this.quantity = quantity;
-    }
-
     public Account getAccount() {
         return account;
     }
@@ -84,11 +72,11 @@ public class Transaction {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Transaction that = (Transaction) o;
-        return Objects.equals(id, that.id) && Objects.equals(value, that.value) && Objects.equals(transactionTime, that.transactionTime) && Objects.equals(quantity, that.quantity) && Objects.equals(account, that.account) && Objects.equals(seller, that.seller);
+        return Objects.equals(id, that.id) && Objects.equals(value, that.value) && Objects.equals(transactionTime, that.transactionTime) && Objects.equals(account, that.account) && Objects.equals(seller, that.seller);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, value, transactionTime, quantity, account, seller);
+        return Objects.hash(id, value, transactionTime, account, seller);
     }
 }
