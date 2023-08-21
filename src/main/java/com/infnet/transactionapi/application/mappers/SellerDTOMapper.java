@@ -15,12 +15,12 @@ public class SellerDTOMapper {
         this.mapper = mapper;
     }
 
-    public SellerDTO toDTO(SellerDTO sellerDTO) {
-        if (Objects.isNull(sellerDTO)) {
+    public SellerDTO toDTO(SellerDomain sellerDomain) {
+        if (Objects.isNull(sellerDomain)) {
             return null;
         }
 
-        return mapper.map(sellerDTO, SellerDTO.class);
+        return mapper.map(sellerDomain, SellerDTO.class);
     }
 
     public SellerDomain toDomain(SellerDTO sellerDTO) {
