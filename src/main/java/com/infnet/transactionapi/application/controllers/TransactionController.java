@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Transaction", description = "Transaction API")
+@Tag(name = "Transactions")
 @RestController
 @RequestMapping("/transactions")
 public class TransactionController {
@@ -24,9 +24,9 @@ public class TransactionController {
     public ResponseEntity<Object> getAllTransactions() {
         try {
             List<TransactionDTO> transactions = transactionService.getAllTransactions();
-            return new ResponseEntity<>(transactions, null, HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK).body(transactions);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), null, HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
@@ -34,9 +34,9 @@ public class TransactionController {
     public ResponseEntity<Object> getTransactionById(@PathVariable Long id) {
         try {
             TransactionDTO transaction = transactionService.getTransactionById(id);
-            return new ResponseEntity<>(transaction, null, HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK).body(transaction);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), null, HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
@@ -44,9 +44,9 @@ public class TransactionController {
     public ResponseEntity<Object> createTransaction(@RequestBody TransactionDTO transactionDTO) {
         try {
             TransactionDTO transaction = transactionService.createTransaction(transactionDTO);
-            return new ResponseEntity<>(transaction, null, HttpStatus.CREATED);
+            return ResponseEntity.status(HttpStatus.CREATED).body(transaction);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), null, HttpStatus.UNPROCESSABLE_ENTITY);
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(e.getMessage());
         }
     }
 }

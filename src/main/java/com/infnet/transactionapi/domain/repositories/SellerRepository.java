@@ -9,4 +9,5 @@ public interface SellerRepository {
     List<SellerDomain> findAll();
     SellerDomain findById(Long id);
     SellerDomain save(SellerDomain seller);
+    SellerDomain update(SellerDomain seller);
 }

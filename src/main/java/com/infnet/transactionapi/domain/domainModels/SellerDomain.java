@@ -31,14 +31,6 @@ public class SellerDomain {
         this.name = name;
     }
 
-//    public List<TransactionDomain> getTransactions() {
-//        return transactions;
-//    }
-//
-//    public void setTransactions(List<TransactionDomain> transactions) {
-//        this.transactions = transactions;
-//    }
-
 
     @Override
     public boolean equals(Object o) {

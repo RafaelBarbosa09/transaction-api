@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Account", description = "Account API")
+@Tag(name = "Accounts")
 @RestController
 @RequestMapping("/accounts")
 public class AccountController {

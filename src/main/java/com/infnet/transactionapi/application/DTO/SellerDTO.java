@@ -1,6 +1,7 @@
 package com.infnet.transactionapi.application.DTO;
 
 public class SellerDTO {
+//    private Long id;
     private String name;
 
     public SellerDTO() {}
