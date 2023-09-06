@@ -1,6 +1,6 @@
 package com.infnet.transactionapi.domain.domainModels;
 
-import com.infnet.transactionapi.domain.Exceptions.*;
+import com.infnet.transactionapi.domain.exceptions.*;
 
 import java.math.BigDecimal;
 import java.util.Date;

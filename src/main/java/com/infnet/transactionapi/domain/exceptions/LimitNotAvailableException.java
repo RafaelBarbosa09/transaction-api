@@ -1,4 +1,4 @@
-package com.infnet.transactionapi.domain.Exceptions;
+package com.infnet.transactionapi.domain.exceptions;
 
 public class LimitNotAvailableException extends RuntimeException{
     public LimitNotAvailableException(String message) {

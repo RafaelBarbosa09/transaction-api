@@ -1,4 +1,4 @@
-package com.infnet.transactionapi.domain.Exceptions;
+package com.infnet.transactionapi.domain.exceptions;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String message) {

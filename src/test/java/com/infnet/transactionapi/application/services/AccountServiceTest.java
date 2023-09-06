@@ -7,7 +7,7 @@ import static org.mockito.Mockito.*;
 
 import com.infnet.transactionapi.application.dto.AccountDTO;
 import com.infnet.transactionapi.application.mappers.AccountDTOMapper;
-import com.infnet.transactionapi.domain.Exceptions.AccountAlreadyExistsException;
+import com.infnet.transactionapi.domain.exceptions.AccountAlreadyExistsException;
 import com.infnet.transactionapi.domain.domainModels.AccountDomain;
 import com.infnet.transactionapi.domain.repositories.AccountRepository;
 import org.junit.jupiter.api.BeforeEach;

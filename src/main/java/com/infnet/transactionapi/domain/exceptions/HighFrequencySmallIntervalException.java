@@ -1,4 +1,4 @@
-package com.infnet.transactionapi.domain.Exceptions;
+package com.infnet.transactionapi.domain.exceptions;
 
 public class HighFrequencySmallIntervalException extends RuntimeException {
     public HighFrequencySmallIntervalException(String message) {
