@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import com.infnet.transactionapi.application.DTO.AccountDTO;
+import com.infnet.transactionapi.application.dto.AccountDTO;
 import com.infnet.transactionapi.application.mappers.AccountDTOMapper;
 import com.infnet.transactionapi.domain.Exceptions.AccountAlreadyExistsException;
 import com.infnet.transactionapi.domain.domainModels.AccountDomain;

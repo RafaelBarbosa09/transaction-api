@@ -1,6 +1,6 @@
 package com.infnet.transactionapi.application.mappers;
 
-import com.infnet.transactionapi.application.DTO.TransactionDTO;
+import com.infnet.transactionapi.application.dto.TransactionDTO;
 import com.infnet.transactionapi.domain.domainModels.TransactionDomain;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;

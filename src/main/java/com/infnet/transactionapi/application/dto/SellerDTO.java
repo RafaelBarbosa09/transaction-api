@@ -1,4 +1,4 @@
-package com.infnet.transactionapi.application.DTO;
+package com.infnet.transactionapi.application.dto;
 
 public class SellerDTO {
 //    private Long id;

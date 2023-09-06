@@ -1,6 +1,6 @@
 package com.infnet.transactionapi.application.services;
 
-import com.infnet.transactionapi.application.DTO.AccountDTO;
+import com.infnet.transactionapi.application.dto.AccountDTO;
 import com.infnet.transactionapi.application.mappers.AccountDTOMapper;
 import com.infnet.transactionapi.domain.Exceptions.AccountAlreadyExistsException;
 import com.infnet.transactionapi.domain.domainModels.AccountDomain;

@@ -1,4 +1,4 @@
-package com.infnet.transactionapi.application.DTO;
+package com.infnet.transactionapi.application.dto;
 
 import java.math.BigDecimal;
 import java.util.Objects;

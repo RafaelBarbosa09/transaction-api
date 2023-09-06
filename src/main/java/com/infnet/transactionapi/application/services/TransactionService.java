@@ -1,6 +1,6 @@
 package com.infnet.transactionapi.application.services;
 
-import com.infnet.transactionapi.application.DTO.TransactionDTO;
+import com.infnet.transactionapi.application.dto.TransactionDTO;
 import com.infnet.transactionapi.application.mappers.TransactionDTOMapper;
 import com.infnet.transactionapi.domain.domainModels.AccountDomain;
 import com.infnet.transactionapi.domain.domainModels.SellerDomain;

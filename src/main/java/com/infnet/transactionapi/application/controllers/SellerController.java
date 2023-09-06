@@ -1,6 +1,6 @@
 package com.infnet.transactionapi.application.controllers;
 
-import com.infnet.transactionapi.application.DTO.SellerDTO;
+import com.infnet.transactionapi.application.dto.SellerDTO;
 import com.infnet.transactionapi.application.services.SellerService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
 package com.infnet.transactionapi.application.services;
 
-import com.infnet.transactionapi.application.DTO.SellerDTO;
+import com.infnet.transactionapi.application.dto.SellerDTO;
 import com.infnet.transactionapi.application.mappers.SellerDTOMapper;
 import com.infnet.transactionapi.domain.domainModels.SellerDomain;
 import com.infnet.transactionapi.domain.repositories.SellerRepository;
