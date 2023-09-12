@@ -17,8 +17,8 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
     private final AccountDTOMapper mapper;
-    private final String ACCOUNT_ALREADY_EXISTS = "Account already exists";
-    private final String ACCOUNT_NOT_FOUND = "Account not found";
+    private static final String ACCOUNT_ALREADY_EXISTS = "Account already exists";
+    private static final String ACCOUNT_NOT_FOUND = "Account not found";
 
     public AccountService(AccountRepository accountRepository, AccountDTOMapper mapper) {
         this.accountRepository = accountRepository;
