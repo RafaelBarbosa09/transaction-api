@@ -51,6 +51,14 @@ public class AccountDomain {
         this.activeCard = activeCard;
     }
 
+    public List<TransactionDomain> getTransactions() {
+        return transactionDomains;
+    }
+
+    public void setTransactions(List<TransactionDomain> transactionDomains) {
+        this.transactionDomains = transactionDomains;
+    }
+
     public List<TransactionDomain> getTransactionDomains() {
         return transactionDomains;
     }

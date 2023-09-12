@@ -51,7 +51,7 @@ public class TransactionDomain {
 
     private boolean isHighFrequencySmallInterval(List<TransactionDomain> transactions) {
         Date now = new Date();
-        final long TWO_MINUTES_IN_MILLISECONDS = 2 * 60 * 1000;
+        final long TWO_MINUTES_IN_MILLISECONDS = 2L * 60 * 1000;
         int count = 0;
 
         for (TransactionDomain transaction : transactions) {
@@ -67,7 +67,7 @@ public class TransactionDomain {
     }
 
     private boolean hasDuplicateTransactions(List<TransactionDomain> transactions, TransactionDomain transaction) {
-        final long TWO_MINUTES_IN_MILLISECONDS = 2 * 60 * 1000;
+        final long TWO_MINUTES_IN_MILLISECONDS = 2L * 60 * 1000;
         Date now = new Date();
         int count = 0;
 
