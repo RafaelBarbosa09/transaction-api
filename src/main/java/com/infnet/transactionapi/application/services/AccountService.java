@@ -39,7 +39,7 @@ public class AccountService {
         return this.mapper.toDTO(accountRepository.save(account));
     }
 
-    public Boolean accountAlreadyExists(AccountDomain account) {
+    public boolean accountAlreadyExists(AccountDomain account) {
         AccountDomain accountDomain = accountRepository.findByAccountHolder(account.getAccountHolder());
         return Objects.nonNull(accountDomain);
     }
