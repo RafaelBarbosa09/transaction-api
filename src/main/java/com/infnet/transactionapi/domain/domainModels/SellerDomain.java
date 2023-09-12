@@ -7,8 +7,6 @@ public class SellerDomain {
     private Long id;
     private String name;
 
-//    private List<TransactionDomain> transactions;
-
     public SellerDomain() {}
 
     public SellerDomain(String name) {
