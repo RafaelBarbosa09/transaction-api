@@ -17,6 +17,8 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
     private final AccountDTOMapper mapper;
+    private final String ACCOUNT_ALREADY_EXISTS = "Account already exists";
+    private final String ACCOUNT_NOT_FOUND = "Account not found";
 
     public AccountService(AccountRepository accountRepository, AccountDTOMapper mapper) {
         this.accountRepository = accountRepository;
@@ -32,7 +34,7 @@ public class AccountService {
         AccountDomain accountDomain = this.mapper.toDomain(accountDTO);
 
         if (accountAlreadyExists(accountDomain)) {
-            throw new AccountAlreadyExistsException("Account already exists");
+            throw new AccountAlreadyExistsException(ACCOUNT_ALREADY_EXISTS);
         }
 
         AccountDomain account = AccountFactory.create(accountDomain.getAccountHolder());
@@ -47,7 +49,7 @@ public class AccountService {
     public AccountDTO getAccountById(Long id) {
         AccountDomain account = accountRepository.findById(id);
         if(Objects.isNull(account)) {
-            throw new NotFoundException("Account not found");
+            throw new NotFoundException(ACCOUNT_NOT_FOUND);
         }
 
         return this.mapper.toDTO(account);
@@ -56,7 +58,7 @@ public class AccountService {
     public AccountDTO getAccountByAccountHolder(String accountHolder) {
         AccountDomain account = accountRepository.findByAccountHolder(accountHolder);
         if(Objects.isNull(account)) {
-            throw new NotFoundException("Account not found");
+            throw new NotFoundException(ACCOUNT_NOT_FOUND);
         }
 
         return this.mapper.toDTO(account);
@@ -65,7 +67,7 @@ public class AccountService {
     public void deleteAccount(Long id) {
         AccountDomain account = accountRepository.findById(id);
         if(Objects.isNull(account)) {
-            throw new NotFoundException("Account not found");
+            throw new NotFoundException(ACCOUNT_NOT_FOUND);
         }
 
         accountRepository.deleteById(id);
