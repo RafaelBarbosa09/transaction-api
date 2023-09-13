@@ -27,7 +27,6 @@ public class AccountRepositoryImpl implements AccountRepository {
         return mapper.toDomain(account);
     }
 
-    @Transactional
     @Override
     public AccountDomain save(AccountDomain account) {
         Account accountEntity = mapper.toEntity(account);
