@@ -37,9 +37,7 @@ public class AccountRepositoryImpl implements AccountRepository {
 
     @Override
     public AccountDomain update(AccountDomain account) {
-        Account accountEntity = mapper.toEntity(account);
-        Account accountSaved = repository.save(accountEntity);
-        return mapper.toDomain(accountSaved);
+        return this.save(account);
     }
 
 

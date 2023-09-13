@@ -50,8 +50,6 @@ public class SellerRepositoryImpl implements SellerRepository {
     }
 
     public SellerDomain update(SellerDomain seller) {
-        Seller sellerEntity = mapper.toEntity(seller);
-        Seller sellerSaved = repository.save(sellerEntity);
-        return mapper.toDomain(sellerSaved);
+        return this.save(seller);
     }
 }
