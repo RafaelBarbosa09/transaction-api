@@ -4,6 +4,7 @@ import com.infnet.transactionapi.application.dto.AccountDTO;
 import com.infnet.transactionapi.application.mappers.AccountDTOMapper;
 import com.infnet.transactionapi.domain.exceptions.AccountAlreadyExistsException;
 import com.infnet.transactionapi.domain.domainModels.AccountDomain;
+import com.infnet.transactionapi.domain.exceptions.ExceptionMessages;
 import com.infnet.transactionapi.domain.factories.AccountFactory;
 import com.infnet.transactionapi.domain.repositories.AccountRepository;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,6 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
     private final AccountDTOMapper mapper;
-    private static final String ACCOUNT_ALREADY_EXISTS = "Account already exists";
-    private static final String ACCOUNT_NOT_FOUND = "Account not found";
 
     public AccountService(AccountRepository accountRepository, AccountDTOMapper mapper) {
         this.accountRepository = accountRepository;
@@ -34,7 +33,7 @@ public class AccountService {
         AccountDomain accountDomain = this.mapper.toDomain(accountDTO);
 
         if (accountAlreadyExists(accountDomain)) {
-            throw new AccountAlreadyExistsException(ACCOUNT_ALREADY_EXISTS);
+            throw new AccountAlreadyExistsException(ExceptionMessages.ACCOUNT_ALREADY_EXISTS);
         }
 
         AccountDomain account = AccountFactory.create(accountDomain.getAccountHolder());
@@ -48,28 +47,28 @@ public class AccountService {
 
     public AccountDTO getAccountById(Long id) {
         AccountDomain account = accountRepository.findById(id);
-        if(Objects.isNull(account)) {
-            throw new NotFoundException(ACCOUNT_NOT_FOUND);
-        }
+        validateAccountIsNotNull(account);
 
         return this.mapper.toDTO(account);
     }
 
     public AccountDTO getAccountByAccountHolder(String accountHolder) {
         AccountDomain account = accountRepository.findByAccountHolder(accountHolder);
-        if(Objects.isNull(account)) {
-            throw new NotFoundException(ACCOUNT_NOT_FOUND);
-        }
+        validateAccountIsNotNull(account);
 
         return this.mapper.toDTO(account);
     }
 
     public void deleteAccount(Long id) {
         AccountDomain account = accountRepository.findById(id);
-        if(Objects.isNull(account)) {
-            throw new NotFoundException(ACCOUNT_NOT_FOUND);
-        }
+        validateAccountIsNotNull(account);
 
         accountRepository.deleteById(id);
+    }
+
+    private void validateAccountIsNotNull(AccountDomain account) {
+        if (Objects.isNull(account)) {
+            throw new NotFoundException(ExceptionMessages.ACCOUNT_NOT_FOUND);
+        }
     }
 }

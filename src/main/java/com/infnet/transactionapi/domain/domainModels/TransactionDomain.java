@@ -25,19 +25,19 @@ public class TransactionDomain {
 
     public void authorizeTransaction(List<TransactionDomain> transactions) {
         if(isHighFrequencySmallInterval(transactions)) {
-            throw new HighFrequencySmallIntervalException("High frequency small interval");
+            throw new HighFrequencySmallIntervalException(ExceptionMessages.HIGH_FREQUENCY_SMALL_INTERVAL);
         }
 
         if(hasDuplicateTransactions(transactions, this)) {
-            throw new DuplicateTransactionException("Similar transaction");
+            throw new DuplicateTransactionException(ExceptionMessages.SIMILAR_TRANSACTION);
         }
 
         if(!isActiveCard()) {
-            throw new InactiveCardException("Inactive card");
+            throw new InactiveCardException(ExceptionMessages.INACTIVE_CARD);
         }
 
         if(!isLimitAvailable()) {
-            throw new LimitNotAvailableException("Limit not available");
+            throw new LimitNotAvailableException(ExceptionMessages.LIMIT_NOT_AVAILABLE);
         }
     }
 

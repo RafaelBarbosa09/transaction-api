@@ -5,6 +5,7 @@ import com.infnet.transactionapi.application.mappers.TransactionDTOMapper;
 import com.infnet.transactionapi.domain.domainModels.AccountDomain;
 import com.infnet.transactionapi.domain.domainModels.SellerDomain;
 import com.infnet.transactionapi.domain.domainModels.TransactionDomain;
+import com.infnet.transactionapi.domain.exceptions.ExceptionMessages;
 import com.infnet.transactionapi.domain.repositories.AccountRepository;
 import com.infnet.transactionapi.domain.repositories.SellerRepository;
 import com.infnet.transactionapi.domain.repositories.TransactionRepository;
@@ -44,7 +45,7 @@ public class TransactionService {
     public TransactionDTO getTransactionById(Long id) {
         TransactionDomain transaction = transactionRepository.findById(id);
         if (Objects.isNull(transaction)) {
-            throw new NotFoundException("Transaction not found");
+            throw new NotFoundException(ExceptionMessages.TRANSACTION_NOT_FOUND);
         }
 
         return transactionMapper.toDTO(transaction);
@@ -76,7 +77,7 @@ public class TransactionService {
     private AccountDomain findTransactionAccount(String accountHolder) {
         AccountDomain account = accountRepository.findByAccountHolder(accountHolder);
         if (Objects.isNull(account)) {
-            throw new NotFoundException("Account not found");
+            throw new NotFoundException(ExceptionMessages.ACCOUNT_NOT_FOUND);
         }
 
         return account;
