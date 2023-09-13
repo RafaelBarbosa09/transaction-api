@@ -24,9 +24,9 @@ public class AccountController {
     public ResponseEntity<Object> getAllAccounts() {
         try {
             List<AccountDTO> accounts = accountService.getAllAccounts();
-            return new ResponseEntity<>(accounts, null, 200);
+            return ResponseEntity.status(HttpStatus.OK).body(accounts);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
@@ -34,10 +34,10 @@ public class AccountController {
     public ResponseEntity<Object> createAccount(@RequestBody AccountDTO accountDTO) {
         try {
             AccountDTO account = accountService.createAccount(accountDTO);
-            return new ResponseEntity<>(account, null, HttpStatus.CREATED);
+            return ResponseEntity.status(HttpStatus.CREATED).body(account);
 
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), null, HttpStatus.UNPROCESSABLE_ENTITY);
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(e.getMessage());
         }
     }
 
@@ -45,9 +45,9 @@ public class AccountController {
     public ResponseEntity<Object> getAccountById(@PathVariable Long id) {
         try {
             AccountDTO account = accountService.getAccountById(id);
-            return new ResponseEntity<>(account, null, HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK).body(account);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), null, HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
@@ -55,9 +55,9 @@ public class AccountController {
     public ResponseEntity<Object> getAccountByAccountHolder(@PathVariable String accountHolder) {
         try {
             AccountDTO account = accountService.getAccountByAccountHolder(accountHolder);
-            return new ResponseEntity<>(account, null, HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK).body(account);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), null, HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
@@ -65,9 +65,9 @@ public class AccountController {
     public ResponseEntity<Object> deleteAccountById(@PathVariable Long id) {
         try {
             accountService.deleteAccount(id);
-            return new ResponseEntity<>(null, null, HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), null, HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 }
